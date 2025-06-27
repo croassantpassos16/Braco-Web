@@ -1,0 +1,25 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+  
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "cppdbg",
+      "request": "launch",
+      "args": [],
+      "stopAtEntry": false,
+      "externalConsole": true,
+      "cwd": "c:/Users/mathe/OneDrive/Área de Trabalho/Projetos/Esp-32/Wi-fi/Projeto_SEMB2/GarraLABAM",
+      "program": "c:/Users/mathe/OneDrive/Área de Trabalho/Projetos/Esp-32/Wi-fi/Projeto_SEMB2/GarraLABAM/build/Debug/outDebug",
+      "MIMode": "gdb",
+      "miDebuggerPath": "gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ]
+    }
+  ]
+}

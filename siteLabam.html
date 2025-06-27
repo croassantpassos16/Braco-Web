@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle Avançado L.A.B.A.M</title>
+    <style>
+        :root {
+            --primary: #0a192f;
+            --secondary: #172a45;
+            --accent: #64ffda;
+            --text: #ccd6f6;
+            --highlight: #1e90ff;
+            --warning: #ff5f56;
+            --enabled: #4CAF50;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--primary);
+            color: var(--text);
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(30, 144, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(100, 255, 218, 0.1) 0%, transparent 50%);
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+        }
+        
+        h1 {
+            color: var(--accent);
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(100, 255, 218, 0.3);
+            letter-spacing: 2px;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+        
+        .enable-control {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            background-color: var(--secondary);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .enable-status {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background-color: var(--warning);
+            position: relative;
+            transition: background-color 0.3s ease;
+        }
+        
+        .enable-status.enabled {
+            background-color: var(--enabled);
+            box-shadow: 0 0 15px var(--enabled);
+        }
+        
+        .enable-status::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border-radius: 50%;
+            border: 2px solid var(--warning);
+            animation: pulse 2s infinite;
+            opacity: 0;
+        }
+        
+        .enable-status.enabled::after {
+            border-color: var(--enabled);
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(0.8); opacity: 0.5; }
+            70% { transform: scale(1.3); opacity: 0; }
+            100% { opacity: 0; }
+        }
+        
+        .btn {
+            background-color: var(--secondary);
+            color: var(--text);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            font-weight: 500;
+        }
+        
+        .btn:hover {
+            background-color: rgba(100, 255, 218, 0.1);
+            color: var(--accent);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(100, 255, 218, 0.3);
+        }
+        
+        .btn.active {
+            background-color: var(--accent);
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        .slider-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: var(--secondary);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .slider-group {
+            margin-bottom: 25px;
+        }
+        
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+        
+        .slider-name {
+            color: var(--accent);
+        }
+        
+        .slider-value {
+            font-family: 'Courier New', monospace;
+            color: var(--highlight);
+            font-weight: bold;
+            min-width: 40px;
+            text-align: right;
+        }
+        
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 10px;
+            border-radius: 5px;
+            background: var(--primary);
+            outline: none;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .slider::-webkit-slider-thumb:hover {
+            background: var(--highlight);
+            transform: scale(1.2);
+        }
+        
+        /* Novo estilo para os botões de controle */
+        .control-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .control-btn {
+            background-color: var(--secondary);
+            color: var(--text);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            min-width: 180px;
+        }
+        
+        .control-btn:hover {
+            background-color: rgba(100, 255, 218, 0.1);
+            color: var(--accent);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(100, 255, 218, 0.3);
+        }
+        
+        .home-btn {
+            border: 2px solid #64ffda;
+        }
+        
+        .start-cycle-btn {
+            border: 2px solid #1e8eff;
+        }
+        
+        .stop-cycle-btn {
+            border: 2px solid #ff5f56;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .btn {
+                padding: 10px 20px;
+            }
+            
+            .control-btn {
+                min-width: 150px;
+                padding: 10px 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .control-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>L.A.B.A.M ROBOTICS PRO</h1>
+            <p class="subtitle">Controle Avançado do Braço Robótico</p>
+        </header>
+        
+        <div class="enable-control">
+            <div class="enable-status" id="enableStatus"></div>
+            <button class="btn" id="enableBtn">
+                <i class="fas fa-power-off"></i> Habilitar Controle
+            </button>
+        </div>
+        
+        <div class="control-buttons">
+            <button class="control-btn home-btn" id="homeBtn">
+                <i class="fas fa-home"></i> Posição Inicial
+            </button>
+            <button class="control-btn start-cycle-btn" id="startCycleBtn">
+                <i class="fas fa-sync-alt"></i> Ciclo Sensorizado
+            </button>
+            <button class="control-btn stop-cycle-btn" id="stopCycleBtn">
+                <i class="fas fa-stop"></i> Parar Ciclo
+            </button>
+        </div>
+        
+        <div class="slider-container">
+            <div class="slider-group">
+                <div class="slider-label">
+                    <span class="slider-name"><i class="fas fa-arrows-alt-v"></i> Servo Base</span>
+                    <span class="slider-value" id="servo1Value">90°</span>
+                </div>
+                <input type="range" min="0" max="180" value="90" class="slider" id="servo1Slider">
+            </div>
+            
+            <div class="slider-group">
+                <div class="slider-label">
+                    <span class="slider-name"><i class="fas fa-arrows-alt-v"></i> Servo Horizontal</span>
+                    <span class="slider-value" id="servo2Value">90°</span>
+                </div>
+                <input type="range" min="0" max="90" value="51" class="slider" id="servo2Slider">
+            </div>
+            
+            <div class="slider-group">
+                <div class="slider-label">
+                    <span class="slider-name"><i class="fas fa-arrows-alt-v"></i> Servo Vertical</span>
+                    <span class="slider-value" id="servo3Value">90°</span>
+                </div>
+                <input type="range" min="0" max="110" value="57" class="slider" id="servo3Slider">
+            </div>
+            
+            <div class="slider-group">
+                <div class="slider-label">
+                    <span class="slider-name"><i class="fas fa-hand-paper"></i> Servo Garra</span>
+                    <span class="slider-value" id="servo4Value">90°</span>
+                </div>
+                <input type="range" min="0" max="130" value="90" class="slider" id="servo4Slider">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('enableBtn').addEventListener('click', function() {
+            const enableStatus = document.getElementById('enableStatus');
+            const isEnabled = enableStatus.classList.toggle('enabled');
+            
+            this.innerHTML = isEnabled 
+                ? '<i class="fas fa-power-off"></i> Desabilitar Controle' 
+                : '<i class="fas fa-power-off"></i> Habilitar Controle';
+            
+            const sliders = document.querySelectorAll('.slider');
+            sliders.forEach(slider => {
+                slider.disabled = !isEnabled;
+            });
+            
+            updateServos('enable=' + isEnabled);
+        });
+        
+        function setupSlider(sliderId, valueId, servoNumber) {
+            const slider = document.getElementById(sliderId);
+            const valueDisplay = document.getElementById(valueId);
+            
+            slider.addEventListener('input', function() {
+                valueDisplay.textContent = this.value + '°';
+                
+                updateServos('servo' + servoNumber + '=' + this.value);
+            });
+        }
+        
+        setupSlider('servo1Slider', 'servo1Value', 1);
+        setupSlider('servo2Slider', 'servo2Value', 2);
+        setupSlider('servo3Slider', 'servo3Value', 3);
+        setupSlider('servo4Slider', 'servo4Value', 4);
+        
+        function updateServos(params) {
+            fetch('/update?' + params)
+                .then(response => response.text())
+                .then(data => console.log('Resposta:', data))
+                .catch(error => console.error('Erro:', error));
+        }
+        
+        document.getElementById('homeBtn').addEventListener('click', function() {
+            updateServos('command=home');
+        });
+        
+        document.getElementById('startCycleBtn').addEventListener('click', function() {
+            updateServos('command=start_cycle');
+        });
+        
+        document.getElementById('stopCycleBtn').addEventListener('click', function() {
+            updateServos('command=stop_cycle');
+        });
+    </script>
+</body>
+</html>
