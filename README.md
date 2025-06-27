@@ -67,6 +67,18 @@ A interface HTML embarcada no ESP32 é responsiva e estilizada com CSS moderno. 
     // Executa sequência de posições pré-definidas
   }
 
+---
+
+## 📖 Documentação
+
+- [Documentação do ESP-32](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/index.html)
+- [Documentação da biblioteca Wi-Fi](https://docs.arduino.cc/language-reference/en/functions/wifi/wificlass/)
+- [Documentação do JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+- [Documentação do CSS](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+- [Docummentação do HTML](https://developer.mozilla.org/pt-BR/docs/Web/HTML)
+
+---
+
 ## 👨‍💻 Autor
 
 **Matheus Passos Pechin Ronchi**  
